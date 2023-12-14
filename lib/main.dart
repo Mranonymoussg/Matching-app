@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'color.dart';
+import 'package:matching_app/constants/large_text.dart';
+import 'constants/color.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,51 +26,89 @@ class home extends StatefulWidget {
   State<home> createState() => _homeState();
 }
 
-class _homeState extends State<home> {
+class _homeState extends State<home> with TickerProviderStateMixin{
   @override
   Widget build(BuildContext context) {
+    TabController _tabController = TabController(length: 3, vsync: this);
+
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: AppBar(
-        title: Center(
-          child: Text(
-            style: TextStyle(color: textColor),
-            'Matching App',
+      body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Container(
+          padding: EdgeInsets.fromLTRB(20, 70, 20, 0),
+
+          //TOPBAR
+
+          child: Row(
+            children: [
+              Icon(
+                Icons.menu,
+                color: banners,
+                size: 30,
+              ),
+              Expanded(
+                child: Container(),
+              ),
+              Icon(
+                Icons.notifications,
+                color: banners,
+                size: 30,
+              ),
+            ],
           ),
         ),
-      ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 15.0,
-          vertical: 10.0,
+        SizedBox(
+          height: 40,
         ),
-        child: Container(
-          width: double.infinity,
-          height: 50.0,
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20.0),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  blurRadius: 10,
-                  spreadRadius: 2.0,
-                  offset: Offset(3, 0),
-                )
-              ]),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
-              children: [
-                TextFormField(
-                  decoration: InputDecoration(hintText: 'Find people'),
+
+        //INTEREST TEXT
+
+        Container(
+          margin: const EdgeInsets.only(left: 20),
+          child: LargeText(text: 'Interests'),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+
+        //TABBAR
+
+        Container(
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: TabBar(
+              labelPadding: EdgeInsets.only(left: 0, right: 30),
+              controller: _tabController,
+              unselectedLabelColor: Colors.grey,
+              isScrollable: true,
+
+              tabs: [
+                Tab(
+                  text: 'Music',
                 ),
-                Icon(Icons.search),
+                Tab(
+                  text: 'Travel',
+                ),
+                Tab(
+                  text: 'Animals',
+                ),
               ],
             ),
           ),
         ),
-      ),
+        Container(
+          height: 300,
+          width: double.maxFinite,
+          child: TabBarView(
+            controller: _tabController,
+              children: [
+            Text('music lover profiles'),
+            Text('Traveller profiles'),
+            Text('Animal Lover\'s profiles'),
+
+          ]),
+        )
+      ]),
     );
   }
 }
